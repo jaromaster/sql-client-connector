@@ -27,8 +27,12 @@ router.post("/mysql", async (ctx: Context) => {
 
     } catch (error: any) {
         const err = error as Error;
-        console.log(err.message);
-        ctx.response.status = 401;
+        if (err.message.startsWith("Access denied")) {
+            ctx.response.status = 401;
+        }
+        else {
+            ctx.response.status = 400;
+        }
     }
 });
 
