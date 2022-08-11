@@ -23,7 +23,7 @@ router.post("/mysql", async (ctx: Context) => {
 
         // return results
         ctx.response.status = 200;
-        ctx.response.body = exec_result;
+        ctx.response.body = {affetedRows: exec_result.affectedRows, rows: exec_result.rows};
 
     } catch (error: any) {
         const err = error as Error;
@@ -32,6 +32,7 @@ router.post("/mysql", async (ctx: Context) => {
         }
         else {
             ctx.response.status = 400;
+            ctx.response.body = err.message;
         }
     }
 });
