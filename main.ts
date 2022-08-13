@@ -54,9 +54,15 @@ router.post("/postgres", async (ctx: Context) => {
         const client = await connect_postgres(conn_details);
         const exec_result = await client.queryArray<[string, string]>(query);
 
+        // get column names
+        const column_names: string[] = [];
+        exec_result.rowDescription?.columns.map(col => {
+            column_names.push(col.name);
+        });
+
         // return results
         ctx.response.status = 200;
-        ctx.response.body = {affectedRows: exec_result.rowCount, rows: exec_result.rows};
+        ctx.response.body = {affectedRows: exec_result.rowCount, rows: exec_result.rows, colNames: column_names};
 
     } catch (error: any) {
         const err = error as Error;
