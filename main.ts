@@ -11,7 +11,7 @@ const router = new Router();
 // serve react app (frontend)
 
 
-// persist users connection in json file
+// persist users connections in json file
 
 // handle mysql queries from client
 router.post("/mysql", async (ctx: Context) => {
@@ -21,10 +21,8 @@ router.post("/mysql", async (ctx: Context) => {
     const query: string = body["query"]; // some string
 
     try {
-        // connect to mysql database
+        // connect and execute
         const client: Client = await connect_mysql(conn_details);
-
-        // run query
         const exec_result = await client.execute(query);
 
         // return results
