@@ -56,7 +56,7 @@ router.post("/postgres", async (ctx: Context) => {
 
         // get column names
         const column_names: string[] = [];
-        exec_result.rowDescription?.columns.map(col => {
+        exec_result.rowDescription?.columns.forEach(col => {
             column_names.push(col.name);
         });
 
