@@ -1,3 +1,4 @@
+import { existsSync } from "https://deno.land/std@0.104.0/fs/exists.ts";
 import { Client } from 'https://deno.land/x/mysql/mod.ts';
 import { Application, Context, Router } from 'https://deno.land/x/oak/mod.ts';
 import { connect_mysql } from "./mysql.ts";
@@ -5,6 +6,7 @@ import { connect_postgres } from './postgres.ts';
 import { add_connection, delete_connection, get_connections } from "./user_connections.ts";
 
 const port = 8000;
+const file_path = "./connections.json";
 const app = new Application();
 const router = new Router();
 
@@ -12,7 +14,14 @@ const router = new Router();
 // serve react app (frontend)
 
 
-// persist users connections in json file
+// create connections.json if not exists
+const exists: boolean = existsSync(file_path);
+if (!exists) {
+    Deno.create(file_path);
+    Deno.writeTextFile(file_path, JSON.stringify([]));
+    console.log("created file")
+}
+
 
 // handle mysql queries from client
 router.post("/mysql", async (ctx: Context) => {
