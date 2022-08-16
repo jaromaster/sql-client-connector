@@ -43,27 +43,6 @@ export const get_connections = async (ctx: Context) => {
     }
 }
 
-// get all user connections
-export const add_connection = async (ctx: Context) => {
-    const file_path = "./connections.json";
-
-    try {
-        const json_connections = await read_connections(file_path);
-
-        const json_connection = await ctx.request.body({type: "json"}).value;
-        json_connections.push(json_connection);
-
-        await Deno.writeTextFile(file_path, JSON.stringify(json_connections));
-
-        ctx.response.status = 200;
-    } catch (error) {
-        const err: Error = error as Error;
-
-        ctx.response.status = 500;
-        ctx.response.body = err.message;
-    }
-}
-
 // delete connection with id
 export const delete_connection = async (ctx: any) => {
     const file_path = "./connections.json";
@@ -78,6 +57,40 @@ export const delete_connection = async (ctx: any) => {
             if (conn.conn.id === conn_id) {
                 json_connections.splice(i, 1);
             }
+        }
+
+        await Deno.writeTextFile(file_path, JSON.stringify(json_connections));
+
+        ctx.response.status = 200;
+    } catch (error) {
+        ctx.response.status = 500;
+    }
+}
+
+// update or add connection with id
+export const update_connection = async (ctx: any) => {
+    const file_path = "./connections.json";
+    const conn_id: number = ctx.params.id as number;
+
+    try {
+        const json_connections = await read_connections(file_path);
+        const json_connection = await ctx.request.body({type: "json"}).value;
+
+        let already_exists = false;
+
+        // update
+        for (let i = 0; i < json_connections.length; i++) {
+            const conn = json_connections[i];
+
+            if (conn.id === conn_id) {
+                json_connections[i] = json_connection;
+                already_exists = true;
+            }
+        }
+
+        // add if not exists
+        if (!already_exists) {
+            json_connections.push(json_connection);
         }
 
         await Deno.writeTextFile(file_path, JSON.stringify(json_connections));

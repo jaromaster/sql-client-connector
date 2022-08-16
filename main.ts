@@ -3,7 +3,7 @@ import { Client } from 'https://deno.land/x/mysql/mod.ts';
 import { Application, Context, Router } from 'https://deno.land/x/oak/mod.ts';
 import { connect_mysql } from "./mysql.ts";
 import { connect_postgres } from './postgres.ts';
-import { add_connection, delete_connection, get_connections } from "./user_connections.ts";
+import { delete_connection, get_connections, update_connection } from "./user_connections.ts";
 
 const port = 8000;
 const file_path = "./connections.json";
@@ -89,11 +89,11 @@ router.post("/postgres", async (ctx: Context) => {
 // get all user connections
 router.get("/connections", get_connections);
 
-// add new connection
-router.post("/connections", add_connection);
-
 // delete connection
-router.delete("/connections/:id", delete_connection)
+router.delete("/connections/:id", delete_connection);
+
+// update connection, add if not exists
+router.put("/connections/:id", update_connection);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
