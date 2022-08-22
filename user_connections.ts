@@ -54,7 +54,7 @@ export const delete_connection = async (ctx: any) => {
         for (let i = 0; i < json_connections.length; i++) {
             const conn = json_connections[i];
 
-            if (conn.conn.id === conn_id) {
+            if (conn.id === conn_id) {
                 json_connections.splice(i, 1);
             }
         }
@@ -63,6 +63,7 @@ export const delete_connection = async (ctx: any) => {
 
         ctx.response.status = 200;
     } catch (error) {
+        console.log(error)
         ctx.response.status = 500;
     }
 }

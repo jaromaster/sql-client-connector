@@ -4,6 +4,7 @@ import { Application, Context, Router } from 'https://deno.land/x/oak/mod.ts';
 import { connect_mysql } from "./mysql.ts";
 import { connect_postgres } from './postgres.ts';
 import { delete_connection, get_connections, update_connection } from "./user_connections.ts";
+import { get_worksheet, store_worksheet } from "./worksheet.ts";
 
 const port = 8000;
 const file_path = "./connections.json";
@@ -19,7 +20,6 @@ const exists: boolean = existsSync(file_path);
 if (!exists) {
     Deno.create(file_path);
     Deno.writeTextFile(file_path, JSON.stringify([]));
-    console.log("created file")
 }
 
 
@@ -94,6 +94,12 @@ router.delete("/connections/:id", delete_connection);
 
 // update connection, add if not exists
 router.put("/connections/:id", update_connection);
+
+// store worksheet content (code)
+router.post("/worksheet", store_worksheet);
+
+// get worksheet content (code)
+router.get("/worksheet", get_worksheet);
 
 app.use(router.routes());
 app.use(router.allowedMethods());
