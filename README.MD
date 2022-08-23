@@ -32,7 +32,7 @@
 `git clone https://github.com/jaromaster/sql-client.git` (UI)<br>
 In UI repo:<br>
 `npm run build`<br>
-Copy build-directory to cloned sql-client-connector and build it:<br>
+Copy build-directory to cloned sql-client-connector and build:<br>
 `deno compile --allow-read --allow-write --allow-env --allow-net main.ts`<br>
 Run:<br>
 `./sql-client-connector`<br>
