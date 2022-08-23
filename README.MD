@@ -15,6 +15,8 @@
 - MySQL
 - PostgreSQL
 
+## UI Repo:
+[SQL Client](https://github.com/jaromaster/sql-client)
 
 # UI:
 ![ui](./preview/ui.png "user interface")
@@ -26,8 +28,8 @@
 ![edit](./preview/add.png "add or edit connection")
 
 # Build:
-`git clone [this repo]`<br>
-`git clone [ui repo]`<br>
+`git clone https://github.com/jaromaster/sql-client-connector.git`<br>
+`git clone https://github.com/jaromaster/sql-client.git` (UI)<br>
 In UI repo:<br>
 `npm run build`<br>
 Copy build-directory to cloned sql-client-connector and build it:<br>
