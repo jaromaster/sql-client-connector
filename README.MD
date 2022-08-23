@@ -24,3 +24,15 @@
 
 # Add or edit:
 ![edit](./preview/add.png "add or edit connection")
+
+# Build:
+`git clone [this repo]`<br>
+`git clone [ui repo]`<br>
+In UI repo:<br>
+`npm run build`<br>
+Copy build-directory to cloned sql-client-connector and build it:<br>
+`deno compile --allow-read --allow-write --allow-env --allow-net main.ts`<br>
+Run:<br>
+`./sql-client-connector`<br>
+Access UI: <br>
+`http://localhost:8000`
