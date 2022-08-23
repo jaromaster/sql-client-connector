@@ -7,19 +7,17 @@ import { delete_connection, get_connections, update_connection } from "./user_co
 import { get_worksheet, store_worksheet } from "./worksheet.ts";
 
 const port = 8000;
-const file_path = "./connections.json";
+const conn_file_path = "./connections.json";
+const react_build_path = "/build";
 const app = new Application();
 const router = new Router();
 
 
-// serve react app (frontend)
-
-
 // create connections.json if not exists
-const exists: boolean = existsSync(file_path);
+const exists: boolean = existsSync(conn_file_path);
 if (!exists) {
-    Deno.create(file_path);
-    Deno.writeTextFile(file_path, JSON.stringify([]));
+    Deno.create(conn_file_path);
+    Deno.writeTextFile(conn_file_path, JSON.stringify([]));
 }
 
 
@@ -100,6 +98,21 @@ router.post("/worksheet", store_worksheet);
 
 // get worksheet content (code)
 router.get("/worksheet", get_worksheet);
+
+
+// serve react app (frontend)
+app.use(async (ctx: Context, next: Function) => {
+    try {
+        await ctx.send({
+            root: `${Deno.cwd()}${react_build_path}`,
+            index: "index.html"
+        });
+    } catch (_) {
+        ctx.response.status = 404;
+        ctx.response.body = ctx.request.url + " not found";
+        await next()
+    }
+});
 
 app.use(router.routes());
 app.use(router.allowedMethods());
