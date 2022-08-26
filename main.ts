@@ -101,7 +101,8 @@ router.get("/worksheet", get_worksheet);
 
 
 // serve react app (frontend)
-app.use(async (ctx: Context, next: Function) => {
+router.use(async (ctx: Context, next: Function) => {
+
     try {
         await ctx.send({
             root: `${Deno.cwd()}${react_build_path}`,
